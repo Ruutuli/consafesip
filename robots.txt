@@ -1,0 +1,5 @@
+# Con Safe Sip
+User-agent: *
+Allow: /
+
+Sitemap: sitemap.xml
