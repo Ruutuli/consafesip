@@ -252,19 +252,23 @@ a:hover {
   .site-nav {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     align-items: center;
     width: auto;
+    max-width: min(52rem, calc(100% - 12rem));
     order: 0;
     margin-left: auto;
     margin-right: 0.5rem;
     padding: 0;
-    gap: 0.35rem 1rem;
+    gap: 0.2rem 0.75rem;
   }
 
   .site-nav a {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     min-height: auto;
     padding: 0.25rem 0;
+    white-space: nowrap;
   }
 
   .site-nav a:hover,
@@ -970,7 +974,7 @@ a:hover {
   color: var(--mint-deep);
 }
 
-/* FAQs */
+/* FAQs — avoid flex/grid on <summary>; WebKit lays details content beside it */
 .faq-list {
   display: grid;
   gap: 0.85rem;
@@ -987,27 +991,30 @@ a:hover {
 .faq-item summary {
   list-style: none;
   cursor: pointer;
-  padding: 1.1rem 1.25rem;
+  position: relative;
+  display: block;
+  padding: 1.1rem 3.5rem 1.1rem 1.25rem;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.15rem;
   line-height: 1.35;
   color: var(--navy);
   min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
   touch-action: manipulation;
 }
 
-.faq-item summary::-webkit-details-marker {
+.faq-item summary::-webkit-details-marker,
+.faq-item summary::marker {
   display: none;
+  content: "";
 }
 
 .faq-item summary::after {
   content: "+";
-  flex-shrink: 0;
+  position: absolute;
+  top: 50%;
+  right: 1.15rem;
+  transform: translateY(-50%);
   width: 1.75rem;
   height: 1.75rem;
   display: grid;
@@ -1022,7 +1029,7 @@ a:hover {
 }
 
 .faq-item[open] summary::after {
-  content: "–";
+  content: "-";
   background: var(--mint-wash);
   color: var(--mint-deep);
 }
