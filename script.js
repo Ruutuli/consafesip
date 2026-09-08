@@ -29,6 +29,14 @@
   const header = document.querySelector(".site-header");
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.getElementById("site-nav");
+  const moreToggle = document.getElementById("nav-more-toggle");
+  const moreCluster = moreToggle?.closest(".nav-cluster--more");
+
+  const setMoreOpen = (open) => {
+    if (!moreToggle || !moreCluster) return;
+    moreCluster.classList.toggle("is-open", open);
+    moreToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  };
 
   const setNavOpen = (open) => {
     if (!header || !toggle || !nav) return;
@@ -36,6 +44,7 @@
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     document.body.classList.toggle("nav-open", open);
+    if (!open) setMoreOpen(false);
   };
 
   if (toggle && nav) {
@@ -44,15 +53,39 @@
     });
 
     nav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => setNavOpen(false));
+      link.addEventListener("click", () => {
+        setNavOpen(false);
+        setMoreOpen(false);
+      });
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") setNavOpen(false);
+      if (event.key === "Escape") {
+        if (moreCluster?.classList.contains("is-open")) {
+          setMoreOpen(false);
+          moreToggle?.focus();
+          return;
+        }
+        setNavOpen(false);
+      }
     });
 
-    window.matchMedia("(min-width: 900px)").addEventListener("change", (event) => {
+    window.matchMedia("(min-width: 980px)").addEventListener("change", (event) => {
       if (event.matches) setNavOpen(false);
+      else setMoreOpen(false);
+    });
+  }
+
+  if (moreToggle && moreCluster) {
+    moreToggle.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setMoreOpen(!moreCluster.classList.contains("is-open"));
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!moreCluster.classList.contains("is-open")) return;
+      if (moreCluster.contains(event.target)) return;
+      setMoreOpen(false);
     });
   }
 

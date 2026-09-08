@@ -161,17 +161,74 @@
         <span class="nav-toggle__bar" aria-hidden="true"></span>
       </button>
       <nav class="site-nav" id="site-nav" aria-label="Primary">
-        <a href="index.html#about">About</a>
-        <a href="index.html#how">How it works</a>
-        <a href="index.html#tips">Safety tips</a>
-        <a href="index.html#know">Know the risks</a>
-        <a href="faqs.html" aria-current="page">FAQs</a>
-        <a href="index.html#join">Join</a>
-        <a href="members.html">Members</a>
-        <a href="index.html#supplies">Supplies</a>
-        <a href="donations.html">Donate</a>
-        <a href="index.html#safety">If spiked</a>
-        <a href="index.html#resources">Resources</a>
+        <div class="nav-cluster">
+          <p class="nav-cluster__label">Learn</p>
+          <a class="nav-link" href="index.html#about">
+            <span class="nav-link__ico nav-link__ico--about" aria-hidden="true"></span>
+            About
+          </a>
+          <a class="nav-link" href="index.html#how">
+            <span class="nav-link__ico nav-link__ico--how" aria-hidden="true"></span>
+            How it works
+          </a>
+          <a class="nav-link" href="faqs.html" aria-current="page">
+            <span class="nav-link__ico nav-link__ico--faq" aria-hidden="true"></span>
+            FAQs
+          </a>
+        </div>
+
+        <div class="nav-cluster">
+          <p class="nav-cluster__label">Participate</p>
+          <a class="nav-link nav-link--mobile-only" href="index.html#join">
+            <span class="nav-link__ico nav-link__ico--join" aria-hidden="true"></span>
+            Join
+          </a>
+          <a class="nav-link" href="members.html">
+            <span class="nav-link__ico nav-link__ico--members" aria-hidden="true"></span>
+            Members
+          </a>
+          <a class="nav-link" href="donations.html">
+            <span class="nav-link__ico nav-link__ico--donate" aria-hidden="true"></span>
+            Donate
+          </a>
+        </div>
+
+        <div class="nav-cluster nav-cluster--more">
+          <p class="nav-cluster__label">Safety &amp; more</p>
+          <button
+            class="nav-more-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="nav-more-panel"
+            id="nav-more-toggle"
+          >
+            <span class="nav-link__ico nav-link__ico--more" aria-hidden="true"></span>
+            More
+            <span class="nav-more-toggle__chev" aria-hidden="true"></span>
+          </button>
+          <div class="nav-more-panel" id="nav-more-panel">
+            <a class="nav-link" href="index.html#tips">
+              <span class="nav-link__ico nav-link__ico--tips" aria-hidden="true"></span>
+              Safety tips
+            </a>
+            <a class="nav-link" href="index.html#know">
+              <span class="nav-link__ico nav-link__ico--know" aria-hidden="true"></span>
+              Know the risks
+            </a>
+            <a class="nav-link" href="index.html#supplies">
+              <span class="nav-link__ico nav-link__ico--supplies" aria-hidden="true"></span>
+              Supplies
+            </a>
+            <a class="nav-link" href="index.html#safety">
+              <span class="nav-link__ico nav-link__ico--safety" aria-hidden="true"></span>
+              If spiked
+            </a>
+            <a class="nav-link" href="index.html#resources">
+              <span class="nav-link__ico nav-link__ico--resources" aria-hidden="true"></span>
+              Resources
+            </a>
+          </div>
+        </div>
       </nav>
       <a class="btn btn--sm btn--pink header-cta" href="index.html#join"
         >Join us</a
