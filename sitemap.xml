@@ -7,6 +7,11 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>faqs.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>members.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

@@ -513,21 +513,7 @@ a:hover {
 
 .section--safety {
   background: linear-gradient(180deg, var(--navy) 0%, var(--navy-soft) 100%);
-  color: #f5f7ff;
-}
-
-.section--safety .eyebrow {
-  color: var(--yellow);
-}
-
-.section--safety h2,
-.section--safety .lead {
-  color: #fff;
-}
-
-.section--safety p,
-.section--safety li {
-  color: rgba(245, 247, 255, 0.9);
+  color: #ffffff;
 }
 
 .eyebrow {
@@ -563,6 +549,27 @@ a:hover {
   font-weight: 650;
   line-height: 1.15;
   color: var(--navy);
+}
+
+.section--safety h2 {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-shadow: none;
+}
+
+.section--safety .lead {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.section--safety .eyebrow {
+  color: var(--yellow);
+}
+
+.section--safety p,
+.section--safety li {
+  color: #ffffff;
 }
 
 .lead {
@@ -961,6 +968,77 @@ a:hover {
 
 .member-link__ig {
   color: var(--mint-deep);
+}
+
+/* FAQs */
+.faq-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.faq-item {
+  background: var(--white);
+  border: 3px solid var(--navy);
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 0 var(--navy);
+  overflow: hidden;
+}
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.1rem 1.25rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 1.35;
+  color: var(--navy);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  touch-action: manipulation;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--blush);
+  color: var(--pink-deep);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.faq-item[open] summary::after {
+  content: "–";
+  background: var(--mint-wash);
+  color: var(--mint-deep);
+}
+
+.faq-item summary:hover {
+  color: var(--pink-deep);
+}
+
+.faq-item p {
+  margin: 0;
+  padding: 0 1.25rem 1.2rem;
+  color: var(--ink-muted);
+}
+
+.faq-item p a {
+  font-weight: 700;
 }
 
 /* Safety tips */
