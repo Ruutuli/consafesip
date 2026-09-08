@@ -89,6 +89,22 @@
     });
   }
 
+  /* Back to top */
+  const backToTop = document.querySelector(".back-to-top");
+  if (backToTop) {
+    const toggleBackToTop = () => {
+      backToTop.classList.toggle("is-visible", window.scrollY > 420);
+    };
+    toggleBackToTop();
+    window.addEventListener("scroll", toggleBackToTop, { passive: true });
+  }
+
+  /* Media kit print */
+  const printKit = document.getElementById("print-media-kit");
+  if (printKit) {
+    printKit.addEventListener("click", () => window.print());
+  }
+
   /* Scroll reveal */
   const revealTargets = document.querySelectorAll(
     ".section, .steps li, .join-list li, .supply-list li, .pay-list li, .member-list li, .tips-list, .callout, .page-hero"
