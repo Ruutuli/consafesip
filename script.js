@@ -99,6 +99,99 @@
     window.addEventListener("scroll", toggleBackToTop, { passive: true });
   }
 
+  /* Share site */
+  const shareBtn = document.getElementById("share-site");
+  const shareMenu = document.getElementById("share-menu");
+  const shareCopy = document.getElementById("share-copy");
+  const shareStatus = document.getElementById("share-status");
+
+  const sharePayload = () => {
+    const url = shareBtn?.dataset.shareUrl || "https://consafesip.info/";
+    const title = shareBtn?.dataset.shareTitle || "Con Safe Sip";
+    const text =
+      shareBtn?.dataset.shareText ||
+      "Cover your drink. Watch your friends. Free drink covers and drink-spiking awareness for conventions, parties, and meetups.";
+    return { url, title, text };
+  };
+
+  const setShareStatus = (message) => {
+    if (!shareStatus) return;
+    shareStatus.textContent = message;
+    if (message) {
+      window.clearTimeout(setShareStatus._timer);
+      setShareStatus._timer = window.setTimeout(() => {
+        shareStatus.textContent = "";
+      }, 2800);
+    }
+  };
+
+  const setShareMenuOpen = (open) => {
+    if (!shareMenu || !shareBtn) return;
+    shareMenu.hidden = !open;
+    shareBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  };
+
+  const copyShareLink = async () => {
+    const { url } = sharePayload();
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const input = document.createElement("input");
+        input.value = url;
+        input.setAttribute("readonly", "");
+        input.style.position = "absolute";
+        input.style.left = "-9999px";
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+      }
+      setShareStatus("Link copied!");
+    } catch {
+      setShareStatus("Couldn’t copy — try selecting the URL.");
+    }
+  };
+
+  if (shareBtn) {
+    shareBtn.setAttribute("aria-expanded", "false");
+    if (shareMenu) shareBtn.setAttribute("aria-controls", "share-menu");
+
+    shareBtn.addEventListener("click", async () => {
+      const payload = sharePayload();
+      if (typeof navigator.share === "function") {
+        try {
+          await navigator.share(payload);
+          setShareStatus("Thanks for sharing!");
+          setShareMenuOpen(false);
+          return;
+        } catch (err) {
+          if (err && err.name === "AbortError") return;
+        }
+      }
+      setShareMenuOpen(Boolean(shareMenu?.hidden));
+    });
+
+    shareMenu?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setShareMenuOpen(false));
+    });
+
+    shareCopy?.addEventListener("click", async () => {
+      await copyShareLink();
+      setShareMenuOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setShareMenuOpen(false);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!shareMenu || shareMenu.hidden) return;
+      const root = shareBtn.closest(".footer-share");
+      if (root && !root.contains(event.target)) setShareMenuOpen(false);
+    });
+  }
+
   /* Media kit print */
   const printKit = document.getElementById("print-media-kit");
   if (printKit) {

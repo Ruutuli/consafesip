@@ -1431,6 +1431,76 @@ a:hover {
   color: var(--mint);
 }
 
+.footer-share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 1.35rem auto 0.35rem;
+  max-width: 22rem;
+}
+
+.footer-share__label {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(245, 247, 255, 0.72);
+}
+
+.footer-share__trigger {
+  color: var(--white);
+}
+
+.footer-share__ico {
+  flex-shrink: 0;
+}
+
+.footer-share__menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.footer-share__menu[hidden] {
+  display: none;
+}
+
+.footer-share__option {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.4rem 0.85rem;
+  border: 2px solid rgba(245, 247, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(245, 247, 255, 0.06);
+  color: #f5f7ff;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.footer-share__option:hover {
+  background: rgba(95, 232, 207, 0.16);
+  border-color: var(--mint);
+  color: var(--mint);
+}
+
+.footer-share__status {
+  margin: 0;
+  min-height: 1.25em;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--mint);
+}
+
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
