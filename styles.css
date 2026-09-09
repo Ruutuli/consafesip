@@ -1467,6 +1467,10 @@ a:hover {
   display: none;
 }
 
+.footer-share__option[hidden] {
+  display: none;
+}
+
 .footer-share__option {
   appearance: none;
   display: inline-flex;

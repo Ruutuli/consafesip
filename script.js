@@ -109,9 +109,9 @@
     const url = shareBtn?.dataset.shareUrl || "https://consafesip.info/";
     const title = shareBtn?.dataset.shareTitle || "Con Safe Sip";
     const text =
-      shareBtn?.dataset.shareText ||
-      "Cover your drink. Watch your friends. Free drink covers and drink-spiking awareness for conventions, parties, and meetups.";
-    return { url, title, text };
+      shareBtn?.dataset.shareText || "Cover your drink. Watch your friends. Free drink covers & drink-spiking awareness for cons, parties, & meetups.";
+    const image = shareBtn?.dataset.shareImage || "assets/og-share.jpg";
+    return { url, title, text, image };
   };
 
   const setShareStatus = (message) => {
@@ -131,14 +131,38 @@
     shareBtn.setAttribute("aria-expanded", open ? "true" : "false");
   };
 
-  const copyShareLink = async () => {
-    const { url } = sharePayload();
+  const getShareImageFile = async () => {
+    const { image } = sharePayload();
+    const response = await fetch(image);
+    if (!response.ok) throw new Error("Could not load share image");
+    const blob = await response.blob();
+    return new File([blob], "con-safe-sip-share.jpg", {
+      type: blob.type || "image/jpeg",
+    });
+  };
+
+  const buildNativeShareData = async () => {
+    const { url, title, text } = sharePayload();
+    const base = { title, text: `${text} ${url}`, url };
+    try {
+      const file = await getShareImageFile();
+      const withFile = { ...base, files: [file] };
+      if (navigator.canShare?.(withFile)) return withFile;
+    } catch {
+      /* fall through to text/url share */
+    }
+    return base;
+  };
+
+  const copyShareLink = async ({ quiet = false } = {}) => {
+    const { url, text } = sharePayload();
+    const clipboardText = `${text} ${url}`;
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url);
+        await navigator.clipboard.writeText(clipboardText);
       } else {
         const input = document.createElement("input");
-        input.value = url;
+        input.value = clipboardText;
         input.setAttribute("readonly", "");
         input.style.position = "absolute";
         input.style.left = "-9999px";
@@ -147,28 +171,52 @@
         document.execCommand("copy");
         document.body.removeChild(input);
       }
-      setShareStatus("Link copied!");
+      if (!quiet) setShareStatus("Copied — paste it with the graphic!");
+      return true;
     } catch {
-      setShareStatus("Couldn’t copy — try selecting the URL.");
+      if (!quiet) setShareStatus("Couldn’t copy — try selecting the URL.");
+      return false;
     }
+  };
+
+  const downloadShareImage = async ({ quiet = false } = {}) => {
+    const { image } = sharePayload();
+    try {
+      const response = await fetch(image);
+      if (!response.ok) throw new Error("fetch failed");
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "con-safe-sip-share.jpg";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(objectUrl);
+      if (!quiet) setShareStatus("Graphic saved — post it with your caption!");
+      return true;
+    } catch {
+      /* Fallback: open the image so the user can save it */
+      window.open(image, "_blank", "noopener,noreferrer");
+      if (!quiet) setShareStatus("Opened graphic — save/share from there.");
+      return false;
+    }
+  };
+
+  const shareToInstagram = async () => {
+    await copyShareLink({ quiet: true });
+    await downloadShareImage({ quiet: true });
+    window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+    setShareStatus("Caption copied & graphic saved — open Instagram and paste when you post!");
   };
 
   if (shareBtn) {
     shareBtn.setAttribute("aria-expanded", "false");
     if (shareMenu) shareBtn.setAttribute("aria-controls", "share-menu");
 
-    shareBtn.addEventListener("click", async () => {
-      const payload = sharePayload();
-      if (typeof navigator.share === "function") {
-        try {
-          await navigator.share(payload);
-          setShareStatus("Thanks for sharing!");
-          setShareMenuOpen(false);
-          return;
-        } catch (err) {
-          if (err && err.name === "AbortError") return;
-        }
-      }
+    /* Always show the menu — desktop Web Share often fails/cancels silently */
+    shareBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
       setShareMenuOpen(Boolean(shareMenu?.hidden));
     });
 
@@ -180,6 +228,38 @@
       await copyShareLink();
       setShareMenuOpen(false);
     });
+
+    const shareInstagram = document.getElementById("share-instagram");
+    shareInstagram?.addEventListener("click", async () => {
+      await shareToInstagram();
+      setShareMenuOpen(false);
+    });
+
+    const shareDownload = document.getElementById("share-download");
+    shareDownload?.addEventListener("click", async () => {
+      await downloadShareImage();
+      setShareMenuOpen(false);
+    });
+
+    const shareNative = document.getElementById("share-native");
+    if (shareNative && typeof navigator.share === "function") {
+      shareNative.hidden = false;
+      shareNative.addEventListener("click", async () => {
+        try {
+          setShareStatus("Preparing graphic…");
+          const data = await buildNativeShareData();
+          await navigator.share(data);
+          setShareStatus("Thanks for sharing!");
+          setShareMenuOpen(false);
+        } catch (err) {
+          if (err && err.name === "AbortError") {
+            setShareStatus("");
+            return;
+          }
+          setShareStatus("Pick a network below, or download the graphic.");
+        }
+      });
+    }
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") setShareMenuOpen(false);
