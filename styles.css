@@ -1105,10 +1105,10 @@ a:hover {
 
 .member-link {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
+  gap: 0.85rem 1rem;
   min-height: 56px;
   padding: 1.1rem 1.2rem;
   text-decoration: none;
@@ -1150,6 +1150,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  flex: 1 1 8rem;
   min-width: 0;
 }
 
@@ -1477,9 +1478,10 @@ a:hover {
 }
 
 .media-sheet {
+  width: calc(100% - 2 * clamp(0.75rem, 3.5vw, 1.5rem));
   max-width: 8.5in;
   margin: 1.25rem auto 3rem;
-  padding: clamp(1.25rem, 3vw, 1.75rem);
+  padding: clamp(1rem, 3vw, 1.75rem);
   background: var(--white);
   border: 3px solid var(--navy);
   border-radius: var(--radius);
@@ -1551,8 +1553,29 @@ a:hover {
   color: var(--ink-muted);
 }
 
-.media-sheet__block--site .kit-qr--featured {
-  max-width: 22rem;
+.kit-hero-qr {
+  display: block;
+  width: 100%;
+  max-width: min(18rem, 100%);
+  margin: 0 auto;
+  text-decoration: none;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 3px solid var(--navy);
+  box-shadow: 0 4px 0 var(--navy);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  touch-action: manipulation;
+}
+
+.kit-hero-qr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--navy);
+}
+
+.kit-hero-qr__img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .kit-grid {
@@ -1563,12 +1586,25 @@ a:hover {
   gap: 0.65rem;
 }
 
-.kit-grid--4 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.kit-grid > li {
+  min-width: 0;
 }
 
+.kit-grid--4,
 .kit-grid--3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 400px) {
+  .kit-grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 520px) {
+  .kit-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 720px) {
@@ -1582,6 +1618,8 @@ a:hover {
   flex-direction: column;
   align-items: center;
   gap: 0.45rem;
+  min-width: 0;
+  height: 100%;
   padding: 0.75rem 0.55rem;
   text-align: center;
   text-decoration: none;
@@ -1600,28 +1638,15 @@ a:hover {
   color: var(--navy);
 }
 
-.kit-qr--featured {
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.85rem 1rem;
-  text-align: left;
-  background: var(--mint-wash);
-}
-
 .kit-qr__img {
-  width: 5.5rem;
-  height: 5.5rem;
+  width: min(5.5rem, 100%);
+  height: auto;
+  aspect-ratio: 1;
   flex-shrink: 0;
   border-radius: 0.55rem;
   border: 2px solid var(--navy);
   background: #fff;
   image-rendering: pixelated;
-}
-
-.kit-qr--featured .kit-qr__img {
-  width: 6.5rem;
-  height: 6.5rem;
 }
 
 .kit-qr__meta {
@@ -1678,18 +1703,34 @@ a:hover {
 }
 
 @media (max-width: 520px) {
+  .media-kit-toolbar {
+    flex-direction: column;
+    padding-left: clamp(0.75rem, 3.5vw, 1.5rem);
+    padding-right: clamp(0.75rem, 3.5vw, 1.5rem);
+  }
+
+  .media-kit-toolbar .btn {
+    width: 100%;
+    max-width: 20rem;
+  }
+
   .media-sheet__header {
     flex-direction: column;
     text-align: center;
+    gap: 0.85rem;
   }
 
-  .kit-grid--3 {
-    grid-template-columns: 1fr;
+  .media-sheet__logo {
+    width: 4.5rem;
+    height: 4.5rem;
   }
 
-  .kit-qr--featured {
-    flex-direction: column;
-    text-align: center;
+  .kit-qr__label {
+    font-size: 0.98rem;
+  }
+
+  .kit-qr__sub {
+    font-size: 0.78rem;
   }
 }
 
@@ -1718,6 +1759,7 @@ a:hover {
   }
 
   .media-sheet {
+    width: auto;
     max-width: none;
     margin: 0;
     padding: 0;
@@ -1729,20 +1771,35 @@ a:hover {
 
   .media-sheet__header {
     break-inside: avoid;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.65rem;
   }
 
   .media-sheet__logo {
-    width: 4.25rem;
-    height: 4.25rem;
+    width: 3.5rem;
+    height: 3.5rem;
   }
 
   .media-sheet__title {
-    font-size: 22pt;
+    font-size: 18pt;
+  }
+
+  .media-sheet__lede {
+    font-size: 9.5pt;
   }
 
   .media-sheet__block {
     break-inside: avoid;
-    margin-top: 0.85rem;
+    margin-top: 0.65rem;
+  }
+
+  .media-sheet__heading {
+    font-size: 12pt;
+  }
+
+  .media-sheet__note {
+    margin-bottom: 0.45rem;
+    font-size: 9pt;
   }
 
   .kit-grid--4 {
@@ -1757,20 +1814,48 @@ a:hover {
     box-shadow: none;
     background: #fff;
     border-width: 2px;
+    padding: 0.45rem 0.35rem;
+    gap: 0.25rem;
   }
 
   .kit-qr:hover {
     transform: none;
   }
 
-  .kit-qr__img {
-    width: 1.05in;
-    height: 1.05in;
+  .kit-hero-qr {
+    max-width: 2.85in;
+    box-shadow: none;
+    border-width: 2px;
   }
 
-  .kit-qr--featured .kit-qr__img {
-    width: 1.25in;
-    height: 1.25in;
+  .kit-hero-qr:hover {
+    transform: none;
+  }
+
+  .kit-qr__img {
+    width: 0.95in;
+    height: 0.95in;
+  }
+
+  .kit-qr__label {
+    font-size: 10pt;
+  }
+
+  .kit-qr__sub {
+    font-size: 8.5pt;
+  }
+
+  .media-sheet__footer {
+    margin-top: 0.75rem;
+    padding-top: 0.55rem;
+  }
+
+  .media-sheet__footer p {
+    font-size: 8.5pt;
+  }
+
+  .media-sheet__url {
+    font-size: 11pt !important;
   }
 
   a {
@@ -1785,20 +1870,81 @@ a:hover {
     padding-right: 1rem;
   }
 
+  .page-hero {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
   .pay-link,
   .member-link,
   .supply-list a,
   .join-dm {
-    padding: 1rem;
+    padding: 0.9rem;
   }
 
-  .pay-link {
-    flex-direction: row;
+  .pay-link,
+  .join-dm {
+    gap: 0.75rem;
+  }
+
+  .pay-link__qr,
+  .join-dm__qr {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  .member-link {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
     align-items: center;
+    column-gap: 0.65rem;
+    row-gap: 0.35rem;
+  }
+
+  .member-link__avatar,
+  .member-link__qr {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+
+  .member-link__body {
+    grid-column: 3;
+    min-width: 0;
+  }
+
+  .member-link__name {
+    font-size: 1.15rem;
+  }
+
+  .member-link__ig,
+  .member-link__aka {
+    word-break: break-word;
   }
 
   .join-list li {
     padding-left: 3.1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .member-link {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "avatar body"
+      "qr body";
+  }
+
+  .member-link__avatar {
+    grid-area: avatar;
+  }
+
+  .member-link__qr {
+    grid-area: qr;
+  }
+
+  .member-link__body {
+    grid-area: body;
+    grid-column: auto;
   }
 }
 
